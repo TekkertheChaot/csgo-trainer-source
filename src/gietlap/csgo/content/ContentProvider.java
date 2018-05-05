@@ -44,6 +44,21 @@ public class ContentProvider {
 		}
 	}
 
+	
+	public static int getClientVersion() {
+		BufferedReader br = null;
+		StringBuilder sb = new StringBuilder();
+		try {
+			br = new BufferedReader(new FileReader("data/cver.dat"));
+			String newLine = br.readLine();
+			sb.append(newLine);
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return Integer.parseInt(sb.toString());
+	}
 	public static int getContentVersion() {
 		BufferedReader br = null;
 		StringBuilder sb = new StringBuilder();

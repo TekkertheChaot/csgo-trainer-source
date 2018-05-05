@@ -1,6 +1,7 @@
 package gietlap.csgo.mainMenu;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -10,6 +11,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.swing.JButton;
@@ -26,6 +29,7 @@ public class DataGuardian extends JFrame {
 	private static String contentPath = "data/content";
 	private static String downloadPath = "data/downloaded";
 	private static String urlContent = "https://github.com/TekkertheChaot/csgo-trainer/raw/master/content.zip";
+	private static String urlClient = "https://raw.githubusercontent.com/TekkertheChaot/csgo-trainer/master/cver.dat";
 	private static String urlVer = "https://raw.githubusercontent.com/TekkertheChaot/csgo-trainer/master/ver.dat";
 	/**
 	 * 
@@ -35,6 +39,8 @@ public class DataGuardian extends JFrame {
 	private final JTextPane textLocalVersion = new JTextPane();
 	private int localVer = 0;
 	private int remoteVer = 1;
+	private int ClientVer = 1;
+	private int onlineClientVer = 0;
 
 	/**
 	 * Launch the application.
@@ -61,6 +67,25 @@ public class DataGuardian extends JFrame {
 		JTextPane txtpnDeletewarning = new JTextPane();
 		JTextPane txtpnOnlineVersion = new JTextPane();
 		JTextPane txtpnNotStartable = new JTextPane();
+		JTextPane txtpnUpdateClientDesc = new JTextPane();
+		JTextPane txtpnClientVersion = new JTextPane();
+		JButton btnUpdateClient = new JButton("Aktualisiere Client");
+		btnUpdateClient.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Desktop desk = Desktop.getDesktop();
+				URI uri = null;
+				try {
+					uri = new URI("https://github.com/TekkertheChaot/csgo-trainer/releases");
+				} catch (URISyntaxException e1) {
+					e1.printStackTrace();
+				}
+				try {
+					desk.browse(uri);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		JButton btnDeleteContent = new JButton("Lokale Daten l\u00F6schen");
 		JButton btnProceed = new JButton("Starte das Programm!");
 		btnProceed.addActionListener(new ActionListener() {
@@ -94,13 +119,12 @@ public class DataGuardian extends JFrame {
 				}
 
 				localVer = getLocalVersion();
-				remoteVer = getOnlineVersion();
+				remoteVer = getOnlineContentVersion();
 				txtpnOnlineVersion.setText("Online Datenversion: " + remoteVer);
 				textLocalVersion.setText(("Aktuelle Datenversion: " + localVer));
 				textDownloadDesc.setText("Deine Daten sind auf dem aktuellsten Stand.");
 				textDownloadDesc.setForeground(Color.WHITE);
 				textDownloadDesc.setBackground(Color.DARK_GRAY);
-				textDownloadDesc.setBounds(210, 57, 396, 23);
 				if (localVer < remoteVer) {
 					btnDownload.setEnabled(true);
 					textDownloadDesc.setForeground(Color.GREEN);
@@ -134,13 +158,12 @@ public class DataGuardian extends JFrame {
 				}
 
 				localVer = getLocalVersion();
-				remoteVer = getOnlineVersion();
+				remoteVer = getOnlineContentVersion();
 				txtpnOnlineVersion.setText("Online Datenversion: " + remoteVer);
 				textLocalVersion.setText(("Aktuelle Datenversion: " + localVer));
 				textDownloadDesc.setText("Deine Daten sind auf dem aktuellsten Stand.");
 				textDownloadDesc.setForeground(Color.WHITE);
 				textDownloadDesc.setBackground(Color.DARK_GRAY);
-				textDownloadDesc.setBounds(210, 57, 396, 23);
 				if (localVer < remoteVer) {
 					btnDownload.setEnabled(true);
 					textDownloadDesc.setForeground(Color.GREEN);
@@ -163,14 +186,25 @@ public class DataGuardian extends JFrame {
 			}
 		});
 
+		ClientVer = getLocalClientVersion();
+		onlineClientVer = getOnlineClientVersion();
 		localVer = getLocalVersion();
-		remoteVer = getOnlineVersion();
+		remoteVer = getOnlineContentVersion();
+		txtpnUpdateClientDesc.setText("Dein Client ist auf dem aktuellsten Stand.");
 		txtpnOnlineVersion.setText("Online Datenversion: " + remoteVer);
 		textLocalVersion.setText(("Aktuelle Datenversion: " + localVer));
 		textDownloadDesc.setText("Deine Daten sind auf dem aktuellsten Stand.");
 		textDownloadDesc.setForeground(Color.WHITE);
 		textDownloadDesc.setBackground(Color.DARK_GRAY);
-		textDownloadDesc.setBounds(210, 57, 396, 23);
+		textDownloadDesc.setBounds(180, 45, 396, 23);
+		if (ClientVer >= onlineClientVer) {
+			btnUpdateClient.setEnabled(false);
+			txtpnUpdateClientDesc.setForeground(Color.WHITE);
+		} else if (ClientVer < onlineClientVer) {
+			btnUpdateClient.setEnabled(true);
+			txtpnUpdateClientDesc.setForeground(Color.GREEN);
+			txtpnUpdateClientDesc.setText("Eine neue Client-Version ist verfügbar!");
+		}
 		if (localVer < remoteVer) {
 			btnDownload.setEnabled(true);
 			textDownloadDesc.setForeground(Color.GREEN);
@@ -188,6 +222,7 @@ public class DataGuardian extends JFrame {
 			btnProceed.setVisible(true);
 			txtpnNotStartable.setVisible(false);
 		}
+		txtpnClientVersion.setText("Client Version: "+ClientVer+" ("+onlineClientVer+")");
 		repaint();
 		revalidate();
 
@@ -206,11 +241,11 @@ public class DataGuardian extends JFrame {
 		txtpnGreeting.setForeground(Color.WHITE);
 		txtpnGreeting.setBackground(Color.DARK_GRAY);
 		txtpnGreeting.setText("Hey! Bevor es losgeht, kannst du hier \u00FCberpr\u00FCfen, ob die Daten aktuell sind.");
-		txtpnGreeting.setBounds(126, 11, 480, 35);
+		txtpnGreeting.setBounds(126, 11, 480, 23);
 		contentPane.add(txtpnGreeting);
 
 		btnDownload.setBackground(Color.RED);
-		btnDownload.setBounds(37, 57, 163, 23);
+		btnDownload.setBounds(10, 45, 163, 23);
 		contentPane.add(btnDownload);
 
 		contentPane.add(textDownloadDesc);
@@ -220,13 +255,13 @@ public class DataGuardian extends JFrame {
 		contentPane.add(btnProceed);
 
 		btnDeleteContent.setBackground(Color.RED);
-		btnDeleteContent.setBounds(37, 91, 163, 23);
+		btnDeleteContent.setBounds(10, 68, 163, 23);
 		contentPane.add(btnDeleteContent);
 
 		txtpnDeletewarning.setForeground(Color.WHITE);
 		txtpnDeletewarning.setBackground(Color.DARK_GRAY);
 
-		txtpnDeletewarning.setBounds(210, 91, 396, 23);
+		txtpnDeletewarning.setBounds(180, 68, 396, 23);
 		contentPane.add(txtpnDeletewarning);
 		textLocalVersion.setForeground(Color.LIGHT_GRAY);
 		textLocalVersion.setBackground(Color.DARK_GRAY);
@@ -244,9 +279,39 @@ public class DataGuardian extends JFrame {
 		txtpnNotStartable.setBounds(100, 142, 527, 20);
 		contentPane.add(txtpnNotStartable);
 
+		btnUpdateClient.setBackground(Color.RED);
+		btnUpdateClient.setBounds(10, 91, 163, 23);
+		contentPane.add(btnUpdateClient);
+
+		txtpnUpdateClientDesc.setBackground(Color.DARK_GRAY);
+		txtpnUpdateClientDesc.setBounds(180, 91, 396, 20);
+		contentPane.add(txtpnUpdateClientDesc);
+
+		txtpnClientVersion.setForeground(Color.LIGHT_GRAY);
+		txtpnClientVersion.setBackground(Color.DARK_GRAY);
+		txtpnClientVersion.setBounds(468, 195, 189, 20);
+		contentPane.add(txtpnClientVersion);
+
 	}
 
-	private int getOnlineVersion() {
+	private int getOnlineClientVersion() {
+		try {
+			ContentProvider.download(new URL(urlClient), downloadPath + "/rVer.dat");
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		StringBuilder sb = new StringBuilder();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(downloadPath + "/rVer.dat"));
+			sb.append(br.readLine());
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return Integer.parseInt(sb.toString());
+	}
+
+	private int getOnlineContentVersion() {
 		try {
 			ContentProvider.download(new URL(urlVer), downloadPath + "/rVer.dat");
 		} catch (MalformedURLException e) {
@@ -261,6 +326,10 @@ public class DataGuardian extends JFrame {
 			e.printStackTrace();
 		}
 		return Integer.parseInt(sb.toString());
+	}
+
+	private int getLocalClientVersion() {
+		return ContentProvider.getClientVersion();
 	}
 
 	private int getLocalVersion() {

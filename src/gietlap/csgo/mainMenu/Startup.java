@@ -1,7 +1,7 @@
 package gietlap.csgo.mainMenu;
 
+import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -51,15 +51,17 @@ public class Startup extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 498, 257);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.DARK_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		SpringLayout sl_contentPane = new SpringLayout();
 		contentPane.setLayout(sl_contentPane);
 
 		JTextPane txtpnGreeting = new JTextPane();
+		txtpnGreeting.setForeground(Color.WHITE);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, txtpnGreeting, 5, SpringLayout.NORTH, contentPane);
 		txtpnGreeting.setEditable(false);
-		txtpnGreeting.setBackground(SystemColor.menu);
+		txtpnGreeting.setBackground(Color.DARK_GRAY);
 		sl_contentPane.putConstraint(SpringLayout.WEST, txtpnGreeting, 10, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.EAST, txtpnGreeting, -5, SpringLayout.EAST, contentPane);
 		txtpnGreeting.setText(
@@ -68,6 +70,8 @@ public class Startup extends JFrame {
 
 		JCheckBox chckbxDontShowAgain = new JCheckBox(
 				"Ja, ist ja ok. Du kannst das Fenster n\u00E4chstes mal weglassen...");
+		chckbxDontShowAgain.setForeground(Color.WHITE);
+		chckbxDontShowAgain.setBackground(Color.DARK_GRAY);
 		sl_contentPane.putConstraint(SpringLayout.WEST, chckbxDontShowAgain, 10, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, txtpnGreeting, -6, SpringLayout.NORTH, chckbxDontShowAgain);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, chckbxDontShowAgain, -10, SpringLayout.SOUTH, contentPane);
@@ -95,6 +99,7 @@ public class Startup extends JFrame {
 		contentPane.add(chckbxDontShowAgain);
 
 		JButton btnOK = new JButton("OK");
+		btnOK.setBackground(Color.RED);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, btnOK, 0, SpringLayout.NORTH, chckbxDontShowAgain);
 		sl_contentPane.putConstraint(SpringLayout.EAST, btnOK, -5, SpringLayout.EAST, contentPane);
 		btnOK.addActionListener(new ActionListener() {
