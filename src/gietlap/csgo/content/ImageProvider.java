@@ -1,0 +1,42 @@
+package gietlap.csgo.content;
+
+import java.awt.Image;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
+public class ImageProvider {
+	public static ImageIcon getImageIconSized4Label(JLabel jlabel, ImageIcon imageic) {
+		Image image = imageic.getImage();
+		Image newimg = image.getScaledInstance(jlabel.getWidth(), jlabel.getHeight(), Image.SCALE_SMOOTH);
+		ImageIcon newic = new ImageIcon(newimg);
+		return newic;
+	}
+
+	public static ImageIcon getImageFromPath(String path) {
+		ImageIcon imageic = null;
+		imageic = new ImageIcon(path);
+		return imageic;
+	}
+
+	public static ImageIcon[] getAllImageIconsInDir(String path) {
+		System.out.println("searching for pics in " + path);
+		File file = new File(path);
+		File[] files = file.listFiles();
+		List<ImageIcon> ics = new ArrayList<>();
+		for (File ifile : files) {
+			String filePath = ifile.getPath();
+			if (filePath.endsWith(".jpg") || filePath.endsWith(".png")) {
+				System.out.printf("added: ");
+				ics.add(new ImageIcon(filePath));
+			} else
+				System.out.printf("discarded: ");
+			System.out.println(filePath);
+		}
+		return ics.toArray(new ImageIcon[ics.size()]);
+	}
+
+}
