@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 
 //TODO: Mach eine Passwortabfrage!
 public class PasswordDialog extends JFrame {
+	private static String password = "";
 
 	/**
 	 * 
@@ -26,7 +27,8 @@ public class PasswordDialog extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(boolean retry) {
+		password = null;
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -60,11 +62,13 @@ public class PasswordDialog extends JFrame {
 				for (char ichar : passwordArr) {
 					sb.append(ichar);
 				}
-				System.out.println(sb.toString());
+				password = sb.toString();
+				sb.replace(0, sb.length()-1, "-REDACTED-");
+				sb=null;
 				for (int i = 0; i < passwordArr.length; i++) {
 					passwordArr[i] = ' ';
 				}
-
+				dispose();
 			}
 		});
 		btnProceed.setBackground(SystemColor.menu);
@@ -87,6 +91,12 @@ public class PasswordDialog extends JFrame {
 		contentPane.add(textPasswortDesc);
 
 		JButton btnCancel = new JButton("Abbrechen");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				password=null;
+				dispose();
+			}
+		});
 		btnCancel.setBackground(SystemColor.menu);
 		btnCancel.setBounds(225, 87, 106, 23);
 		contentPane.add(btnCancel);

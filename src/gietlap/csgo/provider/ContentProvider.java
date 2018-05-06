@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import net.lingala.zip4j.exception.ZipException;
 
 public class ContentProvider {
+	private static String zipPassword = null;
 	/**
 	 * Unzips a file and returns its success state.
 	 * 
@@ -34,17 +35,21 @@ public class ContentProvider {
  * @param password password for ziped file
  * @return
  */
-	public static boolean unzip(String source, String destination, String password) {
+	public static int unzip(String source, String destination, String password) {
 		try {
 			net.lingala.zip4j.core.ZipFile zip = new net.lingala.zip4j.core.ZipFile(source);
 			if (zip.isEncrypted()) {
+				zipPassword=password;
+				if(zipPassword==null) {
+					return 2;
+				}else
 				zip.setPassword(password);
 			}
 			zip.extractAll(destination);
-			return true;
+			return 0;
 		} catch (ZipException e) {
 			e.printStackTrace();
-			return false;
+			return 1;
 		}
 	}
 

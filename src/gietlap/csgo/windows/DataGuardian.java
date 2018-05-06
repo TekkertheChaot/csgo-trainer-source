@@ -116,9 +116,21 @@ public class DataGuardian extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					ContentProvider.download(new URL(urlContent), downloadPath + "/content");
-					boolean downloadSuccess = ContentProvider.unzip(downloadPath + "/content", contentPath, null);
-					System.out.println("[INFO] - "+"Download success: "+downloadSuccess);
-					ContentProvider.download(new URL(urlVer), contentPath + "/ver.dat");
+					int unzipSuccess = ContentProvider.unzip(downloadPath + "/content", contentPath, null);
+					switch (unzipSuccess) {
+					case 0:
+						ContentProvider.download(new URL(urlVer), contentPath + "/ver.dat");
+						break;
+					case 1:
+						System.out.println("unzip failed!");
+						break;
+					case 2:
+						System.out.println("zip has pw");
+						PasswordDialog.main(false); // TODO: password weitermachen
+						break;
+					default:
+						break;
+					}
 				} catch (MalformedURLException e) {
 					System.err.println(e.getMessage());
 				}
@@ -142,7 +154,7 @@ public class DataGuardian extends JFrame {
 					btnProceed.setVisible(false);
 					txtpnNotStartable.setVisible(true);
 				} else if (new File(contentPath).listFiles() != null) {
-					System.out.println("[INFO] - "+"Content on file system available");
+					System.out.println("[INFO] - " + "Content on file system available");
 					btnProceed.setEnabled(true);
 					btnProceed.setVisible(true);
 					txtpnNotStartable.setVisible(false);
@@ -181,7 +193,7 @@ public class DataGuardian extends JFrame {
 					btnProceed.setVisible(false);
 					txtpnNotStartable.setVisible(true);
 				} else if (new File(contentPath).listFiles() != null) {
-					System.out.println("[INFO] - "+"Content on file system available");
+					System.out.println("[INFO] - " + "Content on file system available");
 					btnProceed.setEnabled(true);
 					btnProceed.setVisible(true);
 					txtpnNotStartable.setVisible(false);
@@ -222,12 +234,12 @@ public class DataGuardian extends JFrame {
 			btnProceed.setVisible(false);
 			txtpnNotStartable.setVisible(true);
 		} else if (new File(contentPath).listFiles() != null) {
-			System.out.println("[INFO] - "+"Content on file system available");
+			System.out.println("[INFO] - " + "Content on file system available");
 			btnProceed.setEnabled(true);
 			btnProceed.setVisible(true);
 			txtpnNotStartable.setVisible(false);
 		}
-		txtpnClientVersion.setText("Client Version: "+ClientVer+" ("+onlineClientVer+")");
+		txtpnClientVersion.setText("Client Version: " + ClientVer + " (" + onlineClientVer + ")");
 		repaint();
 		revalidate();
 
@@ -297,6 +309,14 @@ public class DataGuardian extends JFrame {
 		txtpnClientVersion.setBounds(525, 195, 132, 20);
 		contentPane.add(txtpnClientVersion);
 
+		JButton button = new JButton("New button");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		button.setBounds(568, 161, 89, 23);
+		contentPane.add(button);
+
 	}
 
 	private int getOnlineClientVersion() {
@@ -323,9 +343,9 @@ public class DataGuardian extends JFrame {
 			System.err.println(e.getMessage());
 			return 0;
 		}
-		
+
 		String ver = FileProvider.getFileContentAsUTF8(downloadPath + "/rver.dat");
-		if(ver==null || ver.equals("")) {
+		if (ver == null || ver.equals("")) {
 			ver = "0";
 		}
 		return Integer.parseInt(ver);
@@ -337,5 +357,9 @@ public class DataGuardian extends JFrame {
 
 	private int getLocalVersion() {
 		return ContentProvider.getContentVersion();
+	}
+
+	public static void setZipPasswordAndTry(String pw) {
+
 	}
 }
