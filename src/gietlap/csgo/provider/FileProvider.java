@@ -13,12 +13,12 @@ public class FileProvider {
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), "UTF8"));
 			sb.append(br.readLine());
 			while ((newLine = br.readLine()) != null) {
-				sb.append("\n"+newLine);
+				sb.append("\n" + newLine);
 			}
 			br.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("[ERROR] - " + e.getMessage());
+			e = null;
 			return null;
 		}
 		return sb.toString();

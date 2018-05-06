@@ -23,18 +23,14 @@ public class ImageProvider {
 	}
 
 	public static ImageIcon[] getAllImageIconsInDir(String path) {
-		System.out.println("searching for pics in " + path);
 		File file = new File(path);
 		File[] files = file.listFiles();
 		List<ImageIcon> ics = new ArrayList<>();
 		for (File ifile : files) {
 			String filePath = ifile.getPath();
 			if (filePath.endsWith(".jpg") || filePath.endsWith(".png")) {
-				System.out.printf("added: ");
 				ics.add(new ImageIcon(filePath));
-			} else
-				System.out.printf("discarded: ");
-			System.out.println(filePath);
+			}
 		}
 		return ics.toArray(new ImageIcon[ics.size()]);
 	}
