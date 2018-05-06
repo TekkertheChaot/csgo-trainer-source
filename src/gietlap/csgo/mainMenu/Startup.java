@@ -15,7 +15,7 @@ import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
 import javax.swing.border.EmptyBorder;
 
-import gietlap.csgo.content.PropertyManager;
+import gietlap.csgo.provider.PropertyManager;
 
 public class Startup extends JFrame {
 
@@ -65,7 +65,7 @@ public class Startup extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.WEST, txtpnGreeting, 10, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.EAST, txtpnGreeting, -5, SpringLayout.EAST, contentPane);
 		txtpnGreeting.setText(
-				"Moin! \r\nDas Programm hier soll alles, was wir in M0xxis Training gesehen, gezeigt und erkl\u00E4rt bekommen haben nochmal festhalten und (hoffentlich) \u00FCberschaubar darstellen.\r\n\r\nDas war's! Viel Spa\u00DF mit dem Progr\u00E4mmchen! :)\r\n\r\n(PS: Du willst direkt was auf dem Server versuchen? Gehe im Men\u00FCbalken auf \"Programm -> Verbinde zum Server\" und schon verbindest du dich zum Server! ;))");
+				"Moin! \r\nDas Programm hier soll alles, was wir in M0xxi's Training gesehen, gezeigt und erkl\u00E4rt bekommen haben nochmal festhalten und (hoffentlich) \u00FCberschaubar darstellen.\r\n\r\nDas war's! Viel Spa\u00DF mit dem Progr\u00E4mmchen! :)\r\n\r\n(PS: Du willst direkt was auf dem Server versuchen? Gehe im Men\u00FCbalken auf \"Programm -> Verbinde zum Server\" und schon verbindest du dich zum Server! ;))");
 		contentPane.add(txtpnGreeting);
 
 		JCheckBox chckbxDontShowAgain = new JCheckBox(

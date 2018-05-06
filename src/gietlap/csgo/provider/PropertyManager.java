@@ -1,4 +1,4 @@
-package gietlap.csgo.content;
+package gietlap.csgo.provider;
 
 import java.io.FileReader;
 import java.io.FileWriter;

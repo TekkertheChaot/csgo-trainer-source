@@ -1,4 +1,4 @@
-package gietlap.csgo.content;
+package gietlap.csgo.provider;
 
 import java.awt.Image;
 import java.io.File;

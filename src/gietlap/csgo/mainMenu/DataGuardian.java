@@ -23,7 +23,8 @@ import javax.swing.border.EmptyBorder;
 
 import org.apache.commons.io.FileUtils;
 
-import gietlap.csgo.content.ContentProvider;
+import gietlap.csgo.provider.ContentProvider;
+import gietlap.csgo.provider.FileProvider;
 
 public class DataGuardian extends JFrame {
 	private static String contentPath = "data/content";
@@ -70,6 +71,7 @@ public class DataGuardian extends JFrame {
 		JTextPane txtpnUpdateClientDesc = new JTextPane();
 		JTextPane txtpnClientVersion = new JTextPane();
 		JButton btnUpdateClient = new JButton("Aktualisiere Client");
+		btnUpdateClient.setForeground(Color.WHITE);
 		btnUpdateClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Desktop desk = Desktop.getDesktop();
@@ -87,7 +89,9 @@ public class DataGuardian extends JFrame {
 			}
 		});
 		JButton btnDeleteContent = new JButton("Lokale Daten l\u00F6schen");
+		btnDeleteContent.setForeground(Color.WHITE);
 		JButton btnProceed = new JButton("Starte das Programm!");
+		btnProceed.setForeground(Color.WHITE);
 		btnProceed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Menu.main(null);
@@ -101,6 +105,7 @@ public class DataGuardian extends JFrame {
 			}
 		});
 		JButton btnDownload = new JButton("Aktualisiere Daten");
+		btnDownload.setForeground(Color.WHITE);
 
 		txtpnOnlineVersion.setText("Online Datenversion: (Verbinde...)");
 		txtpnNotStartable.setText("Du kannst das Programm nicht starten, da keine lokalen Daten vorhanden sind!");
@@ -271,7 +276,7 @@ public class DataGuardian extends JFrame {
 
 		txtpnOnlineVersion.setForeground(Color.LIGHT_GRAY);
 		txtpnOnlineVersion.setBackground(Color.DARK_GRAY);
-		txtpnOnlineVersion.setBounds(191, 195, 210, 20);
+		txtpnOnlineVersion.setBounds(241, 195, 210, 20);
 		contentPane.add(txtpnOnlineVersion);
 
 		txtpnNotStartable.setForeground(Color.RED);
@@ -289,20 +294,20 @@ public class DataGuardian extends JFrame {
 
 		txtpnClientVersion.setForeground(Color.LIGHT_GRAY);
 		txtpnClientVersion.setBackground(Color.DARK_GRAY);
-		txtpnClientVersion.setBounds(468, 195, 189, 20);
+		txtpnClientVersion.setBounds(525, 195, 132, 20);
 		contentPane.add(txtpnClientVersion);
 
 	}
 
 	private int getOnlineClientVersion() {
 		try {
-			ContentProvider.download(new URL(urlClient), downloadPath + "/rVer.dat");
+			ContentProvider.download(new URL(urlClient), downloadPath + "/rcver.dat");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
 		StringBuilder sb = new StringBuilder();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(downloadPath + "/rVer.dat"));
+			BufferedReader br = new BufferedReader(new FileReader(downloadPath + "/rcver.dat"));
 			sb.append(br.readLine());
 			br.close();
 		} catch (IOException e) {
@@ -313,19 +318,17 @@ public class DataGuardian extends JFrame {
 
 	private int getOnlineContentVersion() {
 		try {
-			ContentProvider.download(new URL(urlVer), downloadPath + "/rVer.dat");
+			ContentProvider.download(new URL(urlVer), downloadPath + "/rver.dat");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
+			return 0;
 		}
-		StringBuilder sb = new StringBuilder();
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(downloadPath + "/rVer.dat"));
-			sb.append(br.readLine());
-			br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		
+		String ver = FileProvider.getFileContentAsUTF8(downloadPath + "/rver.dat");
+		if(ver==null || ver.equals("")) {
+			ver = "0";
 		}
-		return Integer.parseInt(sb.toString());
+		return Integer.parseInt(ver);
 	}
 
 	private int getLocalClientVersion() {

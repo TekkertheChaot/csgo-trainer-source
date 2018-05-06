@@ -30,9 +30,9 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
-import gietlap.csgo.content.ContentProvider;
-import gietlap.csgo.content.ImageProvider;
-import gietlap.csgo.content.PropertyManager;
+import gietlap.csgo.provider.ContentProvider;
+import gietlap.csgo.provider.ImageProvider;
+import gietlap.csgo.provider.PropertyManager;
 import gietlap.csgo.treebuilder.Paths;
 import gietlap.csgo.treebuilder.TreeFromFolderTree;
 
@@ -56,8 +56,8 @@ public class Menu extends JFrame {
 	JLabel nadeLabel = new JLabel("Nade Name NULL");
 	JLabel lblImageViewer = new JLabel("ImageLabel");
 	JLabel lblMapName = new JLabel("Map Name NULL");
-	JLabel lblMapcalls = new JLabel("mapCalls");
-	JLabel lblMappic = new JLabel("mapPic");
+	JLabel lblMapcalls = new JLabel("Keine Call-Map verf\u00FCgbar.");
+	JLabel lblMappic = new JLabel("Kein Banner verf\u00FCgbar.");
 	ImageIcon[] nadeICArr = null;
 	int imageIndex = 0;
 	static Properties props = null;
@@ -165,6 +165,7 @@ public class Menu extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		lblMappic.setForeground(Color.LIGHT_GRAY);
 
 		lblMappic.setBounds(515, 38, 401, 308);
 
@@ -217,9 +218,9 @@ public class Menu extends JFrame {
 					if ((imageIndex - 1) < nadeICArr.length) {
 						btnScrollBack.setEnabled(false);
 					}
-					nadeDesc.setText(ContentProvider.getNadeDesc(contentPath + "/" + node.toString()));
-					nadeLabel.setText(ContentProvider.getNadeName(contentPath + "/" + node.toString()));
-					stepDesc.setText(ContentProvider.getNadeSteps(contentPath + "/" + node.toString()));
+					nadeDesc.setText(ContentProvider.getNadeDesc(contentPath + "/" + Paths.getNodePath(node)));
+					nadeLabel.setText(ContentProvider.getNadeName(contentPath + "/" + Paths.getNodePath(node)));
+					stepDesc.setText(ContentProvider.getNadeSteps(contentPath + "/" + Paths.getNodePath(node)));
 				} else
 
 				if (node.getParent().toString().equals("Routinen")) {
@@ -228,8 +229,8 @@ public class Menu extends JFrame {
 					routinePanel.setVisible(true);
 					showPanel.repaint();
 					showPanel.revalidate();
-					lblRoutineHead.setText(ContentProvider.getRoutineName(contentPath + "/" + node.toString()));
-					txtpnRoutineDesc.setText(ContentProvider.getRoutineDesc(contentPath + "/" + node.toString()));
+					lblRoutineHead.setText(ContentProvider.getRoutineName(contentPath + "/" + Paths.getNodePath(node)));
+					txtpnRoutineDesc.setText(ContentProvider.getRoutineDesc(contentPath + "/" + Paths.getNodePath(node)));
 				}
 			}
 		});
@@ -269,6 +270,7 @@ public class Menu extends JFrame {
 		lblMapName.setBounds(10, 0, 190, 28);
 		lblMapName.setFont(new Font("Tahoma", Font.BOLD, 16));
 		mapPanel.add(lblMapName);
+		lblMapcalls.setForeground(Color.LIGHT_GRAY);
 
 		lblMapcalls.setBounds(62, 38, 401, 308);
 		mapPanel.add(lblMapcalls);
@@ -303,9 +305,11 @@ public class Menu extends JFrame {
 		scrollPanel.add(stepDesc);
 		stepDesc.setText("Steps Description");
 		stepDesc.setEditable(false);
+		lblImageViewer.setForeground(Color.LIGHT_GRAY);
 
 		lblImageViewer.setBounds(93, 11, 480, 270);
 		scrollPanel.add(lblImageViewer);
+		btnScrollBack.setForeground(Color.WHITE);
 		btnScrollBack.addActionListener(new ActionListener() { // set action for Scroll Back
 			public void actionPerformed(ActionEvent e) {
 				imageIndex--;
@@ -328,6 +332,7 @@ public class Menu extends JFrame {
 		btnScrollBack.setBackground(Color.RED);
 		btnScrollBack.setBounds(10, 11, 78, 270);
 		scrollPanel.add(btnScrollBack);
+		btnScrollFow.setForeground(Color.WHITE);
 		btnScrollFow.addActionListener(new ActionListener() { // set action for Scroll Foward
 			public void actionPerformed(ActionEvent e) {
 				imageIndex++;
@@ -364,7 +369,7 @@ public class Menu extends JFrame {
 		routinePanel.add(txtpnRoutineDesc);
 		lblRoutineHead.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblRoutineHead.setForeground(Color.WHITE);
-		lblRoutineHead.setBounds(10, 11, 566, 33);
+		lblRoutineHead.setBounds(10, 11, 935, 33);
 
 		routinePanel.add(lblRoutineHead);
 

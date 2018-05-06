@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 
-import gietlap.csgo.content.ContentProvider;
+import gietlap.csgo.provider.ContentProvider;
 
 public class Credits extends JFrame {
 	private int versionBuild = 0;
