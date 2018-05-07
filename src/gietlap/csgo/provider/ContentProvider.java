@@ -46,7 +46,7 @@ public class ContentProvider {
 			net.lingala.zip4j.core.ZipFile zip = new net.lingala.zip4j.core.ZipFile(source);
 			if (zip.isEncrypted()) {
 				if (password == null || password.equals("")) {
-					System.out.println("[INFO] - "+"Zip file needs a password.");
+					System.out.println("[INFO] - " + "Zip file needs a password.");
 					return 2;
 				} else
 					zip.setPassword(password);
@@ -54,16 +54,16 @@ public class ContentProvider {
 			zip.extractAll(destination);
 			return 0;
 		} catch (ZipException e) {
-			if(e.getMessage().contains("Wrong Password")) {
+			if (e.getMessage().contains("Wrong Password")) {
 				deleteContent(DataGuardian.contentPath);
 				return 3;
 			}
-			System.err.println("[ERROR] - "+"Zip extraction failed :"+e.getMessage());
+			System.err.println("[ERROR] - " + "Zip extraction failed :" + e.getMessage());
 			e.printStackTrace();
 			return 1;
 		}
 	}
-	
+
 	public static void deleteContent(String contentPath) {
 		File dir = new File(contentPath);
 		try {

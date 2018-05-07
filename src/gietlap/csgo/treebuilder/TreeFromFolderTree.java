@@ -150,7 +150,8 @@ public class TreeFromFolderTree {
 		File file = new File(contentPath + "/Maps/" + varNode.getParent().getParent().getParent().toString() + "/"
 				+ varNode.getParent().getParent().toString() + "/" + varNode.getParent().toString() + "/"
 				+ varNode.toString());
-		System.out.println("[INFO] - "+"Loaded Path: "+contentPath + "/Maps/" + varNode.getParent().getParent().getParent().toString() + "/"
+		System.out.println("[INFO] - " + "Loaded Path: " + contentPath + "/Maps/"
+				+ varNode.getParent().getParent().getParent().toString() + "/"
 				+ varNode.getParent().getParent().toString() + "/" + varNode.getParent().toString() + "/"
 				+ varNode.toString());
 		File[] files = file.listFiles();

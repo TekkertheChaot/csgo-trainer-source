@@ -198,6 +198,7 @@ public class DataGuardian extends JFrame {
 					public void windowGainedFocus(WindowEvent arg0) {
 						ud.update();
 					}
+
 					public void windowLostFocus(WindowEvent e) {
 					}
 				});
@@ -279,7 +280,6 @@ public class DataGuardian extends JFrame {
 		txtpnClientVersion.setBounds(506, 195, 132, 20);
 		contentPane.add(txtpnClientVersion);
 
-		
 		btnUpdate.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnUpdate.setToolTipText("\u00DCberpr\u00FCfe auf neue Versionen");
 		btnUpdate.setBorder(null);

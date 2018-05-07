@@ -79,7 +79,7 @@ public class Menu extends JFrame {
 					try {
 						props = PropertyManager.initProperties();
 					} catch (IOException e) {
-						System.err.println("[ERROR] - "+e.getMessage());
+						System.err.println("[ERROR] - " + e.getMessage());
 						PropertyManager.firstRun();
 						props = PropertyManager.initProperties();
 					}
@@ -199,7 +199,8 @@ public class Menu extends JFrame {
 					showPanel.repaint();
 					showPanel.revalidate();
 					nadeICArr = ImageProvider.getAllImageIconsInDir(contentPath + "/" + Paths.getNodePath(node));
-					System.out.println("[INFO] - "+nadeICArr.length + " Bilder aus Verzeichnis: "+contentPath + "/" + Paths.getNodePath(node)+" geladen");
+					System.out.println("[INFO] - " + nadeICArr.length + " Bilder aus Verzeichnis: " + contentPath + "/"
+							+ Paths.getNodePath(node) + " geladen");
 					if (nadeICArr.length != 0) {
 						lblImageViewer.setIcon(ImageProvider.getImageIconSized4Label(lblImageViewer, nadeICArr[0]));
 					}
@@ -228,7 +229,8 @@ public class Menu extends JFrame {
 					showPanel.repaint();
 					showPanel.revalidate();
 					lblRoutineHead.setText(ContentProvider.getRoutineName(contentPath + "/" + Paths.getNodePath(node)));
-					txtpnRoutineDesc.setText(ContentProvider.getRoutineDesc(contentPath + "/" + Paths.getNodePath(node)));
+					txtpnRoutineDesc
+							.setText(ContentProvider.getRoutineDesc(contentPath + "/" + Paths.getNodePath(node)));
 				}
 			}
 		});

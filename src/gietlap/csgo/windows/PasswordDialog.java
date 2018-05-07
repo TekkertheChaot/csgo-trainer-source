@@ -151,7 +151,7 @@ public class PasswordDialog extends JFrame {
 		passwordField.getDocument().addDocumentListener(new DocumentListener() {
 			public void removeUpdate(DocumentEvent e) {
 				char[] passwordArr = passwordField.getPassword();
-				if(passwordArr.length<=0) {
+				if (passwordArr.length <= 0) {
 					btnProceed.setEnabled(false);
 					repaint();
 					revalidate();
@@ -160,7 +160,7 @@ public class PasswordDialog extends JFrame {
 
 			public void insertUpdate(DocumentEvent e) {
 				char[] passwordArr = passwordField.getPassword();
-				if(passwordArr.length>0) {
+				if (passwordArr.length > 0) {
 					btnProceed.setEnabled(true);
 					repaint();
 					revalidate();
