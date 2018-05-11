@@ -82,7 +82,7 @@ public class ContentProvider {
 	 * @return Client Build
 	 */
 	public static int getClientVersion() {
-		return 4;
+		return 6;
 	}
 
 	/**
