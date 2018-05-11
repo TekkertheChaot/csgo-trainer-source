@@ -7,6 +7,7 @@ import java.net.URL;
 import org.apache.commons.io.FileUtils;
 
 import gietlap.csgo.windows.DataGuardian;
+import gietlap.csgo.windows.ErrorMessage;
 import net.lingala.zip4j.exception.ZipException;
 
 public class ContentProvider {
@@ -26,6 +27,8 @@ public class ContentProvider {
 		try {
 			FileUtils.copyURLToFile(url, new File(destination));
 		} catch (IOException e) {
+			System.out.println("IO");
+			ErrorMessage.main(e);
 			e.printStackTrace();
 		}
 	}

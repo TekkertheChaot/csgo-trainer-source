@@ -16,7 +16,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-//TODO: Mach eine Passwortabfrage!
 public class PasswordDialog extends JFrame {
 	private static String password = "";
 	private static boolean isRetry = false;

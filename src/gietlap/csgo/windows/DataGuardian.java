@@ -30,21 +30,35 @@ import gietlap.csgo.provider.ContentProvider;
 import gietlap.csgo.provider.FileProvider;
 
 public class DataGuardian extends JFrame {
+	/**
+	 * Version of class
+	 */
+	private static final long serialVersionUID = 1L;
 	public static String contentPath = "data/content";
 	private static String downloadPath = "data/downloaded";
 	private static String urlContent = "https://github.com/TekkertheChaot/csgo-trainer/raw/master/content.zip";
 	private static String urlClient = "https://raw.githubusercontent.com/TekkertheChaot/csgo-trainer/master/cver.dat";
 	private static String urlVer = "https://raw.githubusercontent.com/TekkertheChaot/csgo-trainer/master/ver.dat";
-	/**
-	 * Version of class
-	 */
-	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private final JTextPane textLocalVersion = new JTextPane();
-	private int localVer = 0;
-	private int remoteVer = 1;
-	private int ClientVer = 1;
-	private int onlineClientVer = 0;
+	private static JPanel contentPane;
+	private static JTextPane textLocalVersion = new JTextPane();
+	private static int localVer = 0;
+	private static int remoteVer = 1;
+	private static int ClientVer = 1;
+	private static int onlineClientVer = 0;
+
+	// initialize components
+	private static JTextPane txtpnGreeting = new JTextPane();
+	private static JTextPane textDownloadDesc = new JTextPane();
+	private static JTextPane txtpnDeletewarning = new JTextPane();
+	private static JTextPane txtpnOnlineVersion = new JTextPane();
+	private static JTextPane txtpnNotStartable = new JTextPane();
+	private static JTextPane txtpnUpdateClientDesc = new JTextPane();
+	private static JTextPane txtpnClientVersion = new JTextPane();
+	private static JButton btnUpdate = new JButton("");
+	private static JButton btnDownload = new JButton("Aktualisiere Daten");
+	private static JButton btnDeleteContent = new JButton("Lokale Daten l\u00F6schen");
+	private static JButton btnProceed = new JButton("Starte das Programm!");
+	private static JButton btnUpdateClient = new JButton("Aktualisiere Client");
 
 	/**
 	 * Launch the application.
@@ -67,19 +81,15 @@ public class DataGuardian extends JFrame {
 	 * Create the frame.
 	 */
 	public DataGuardian() {
-		// initialize components
-		JTextPane txtpnGreeting = new JTextPane();
-		JTextPane textDownloadDesc = new JTextPane();
-		JTextPane txtpnDeletewarning = new JTextPane();
-		JTextPane txtpnOnlineVersion = new JTextPane();
-		JTextPane txtpnNotStartable = new JTextPane();
-		JTextPane txtpnUpdateClientDesc = new JTextPane();
-		JTextPane txtpnClientVersion = new JTextPane();
-		JButton btnUpdate = new JButton("");
-		JButton btnDeleteContent = new JButton("Lokale Daten l\u00F6schen");
-		JButton btnProceed = new JButton("Starte das Programm!");
+		addWindowFocusListener(new WindowFocusListener() {
+			public void windowGainedFocus(WindowEvent arg0) {
+				repaintAndValidate();
+			}
 
-		JButton btnUpdateClient = new JButton("Aktualisiere Client");
+			public void windowLostFocus(WindowEvent arg0) {
+			}
+		});
+
 		btnUpdateClient.setForeground(Color.WHITE);
 		btnUpdateClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -97,7 +107,6 @@ public class DataGuardian extends JFrame {
 				}
 			}
 		});
-
 		btnDeleteContent.setForeground(Color.WHITE);
 		btnProceed.setForeground(Color.WHITE);
 		// loads Main Window, thus starting the client
@@ -112,7 +121,7 @@ public class DataGuardian extends JFrame {
 				dispose();
 			}
 		});
-		JButton btnDownload = new JButton("Aktualisiere Daten");
+
 		btnDownload.setForeground(Color.WHITE);
 		txtpnOnlineVersion.setText("Online Datenversion: (Verbinde...)");
 		txtpnNotStartable.setText("Du kannst das Programm nicht starten, da keine lokalen Daten vorhanden sind!");
@@ -125,51 +134,6 @@ public class DataGuardian extends JFrame {
 		 * @author gietlap
 		 *
 		 */
-		final class UPDATER {
-			public void update() {
-				ClientVer = getLocalClientVersion();
-				onlineClientVer = getOnlineClientVersion();
-				localVer = getLocalVersion();
-				remoteVer = getOnlineContentVersion();
-				txtpnUpdateClientDesc.setText("Dein Client ist auf dem aktuellsten Stand.");
-				txtpnOnlineVersion.setText("Online Datenversion: " + remoteVer);
-				textLocalVersion.setText(("Aktuelle Datenversion: " + localVer));
-				textDownloadDesc.setText("Deine Daten sind auf dem aktuellsten Stand.");
-				textDownloadDesc.setForeground(Color.WHITE);
-				textDownloadDesc.setBackground(Color.DARK_GRAY);
-				textDownloadDesc.setBounds(180, 45, 396, 23);
-				if (ClientVer >= onlineClientVer) {
-					btnUpdateClient.setEnabled(false);
-					txtpnUpdateClientDesc.setForeground(Color.WHITE);
-				} else if (ClientVer < onlineClientVer) {
-					btnUpdateClient.setEnabled(true);
-					txtpnUpdateClientDesc.setForeground(Color.GREEN);
-					txtpnUpdateClientDesc.setText("Eine neue Client-Version ist verfügbar!");
-				}
-				if (localVer < remoteVer) {
-					btnDownload.setEnabled(true);
-					textDownloadDesc.setForeground(Color.GREEN);
-					textDownloadDesc.setText("Eine neue Version der Trainingsdaten ist zum herunterladen verfügbar!");
-				} else if (localVer >= remoteVer) {
-					btnDownload.setEnabled(false);
-				}
-				if (new File(contentPath).listFiles() == null) {
-					btnProceed.setEnabled(false);
-					btnProceed.setVisible(false);
-					txtpnNotStartable.setVisible(true);
-				} else if (new File(contentPath).listFiles() != null) {
-					System.out.println("[INFO] - " + "Content on file system available");
-					btnProceed.setEnabled(true);
-					btnProceed.setVisible(true);
-					txtpnNotStartable.setVisible(false);
-				}
-				txtpnClientVersion.setText("Client Version: " + ClientVer + " (" + onlineClientVer + ")");
-				repaint();
-				revalidate();
-			}
-		}
-
-		UPDATER ud = new UPDATER();
 
 		// downloads new Content Version
 		btnDownload.addActionListener(new ActionListener() {
@@ -192,27 +156,19 @@ public class DataGuardian extends JFrame {
 				} catch (MalformedURLException e) {
 					System.err.println(e.getMessage());
 				}
-				ud.update();
-
-				addWindowFocusListener(new WindowFocusListener() {
-					public void windowGainedFocus(WindowEvent arg0) {
-						ud.update();
-					}
-
-					public void windowLostFocus(WindowEvent e) {
-					}
-				});
+				updateVersions();
 			}
 		});
 
 		btnDeleteContent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ContentProvider.deleteContent(contentPath);
-				ud.update();
+				updateVersions();
 			}
 		});
 
-		ud.update(); // Update everything for startup.
+		updateVersions();
+		repaintAndValidate(); // Update everything for startup.
 
 		setTitle("Datenw\u00E4chter");
 		setIconImage(
@@ -285,7 +241,8 @@ public class DataGuardian extends JFrame {
 		btnUpdate.setBorder(null);
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ud.update();
+				updateVersions();
+				repaintAndValidate();
 			}
 		});
 
@@ -300,10 +257,57 @@ public class DataGuardian extends JFrame {
 
 	}
 
-	private int getOnlineClientVersion() {
+	private void repaintAndValidate() {
+		repaint();
+		revalidate();
+	}
+
+	public static void updateVersions() {
+		ClientVer = getLocalClientVersion();
+		onlineClientVer = getOnlineClientVersion();
+		localVer = getLocalVersion();
+		remoteVer = getOnlineContentVersion();
+		txtpnUpdateClientDesc.setText("Dein Client ist auf dem aktuellsten Stand.");
+		txtpnOnlineVersion.setText("Online Datenversion: " + remoteVer);
+		textLocalVersion.setText(("Aktuelle Datenversion: " + localVer));
+		textDownloadDesc.setText("Deine Daten sind auf dem aktuellsten Stand.");
+		textDownloadDesc.setForeground(Color.WHITE);
+		textDownloadDesc.setBackground(Color.DARK_GRAY);
+		textDownloadDesc.setBounds(180, 45, 396, 23);
+		if (ClientVer >= onlineClientVer) {
+			btnUpdateClient.setEnabled(false);
+			txtpnUpdateClientDesc.setForeground(Color.WHITE);
+		} else if (ClientVer < onlineClientVer) {
+			btnUpdateClient.setEnabled(true);
+			txtpnUpdateClientDesc.setForeground(Color.GREEN);
+			txtpnUpdateClientDesc.setText("Eine neue Client-Version ist verfügbar!");
+		}
+		if (localVer < remoteVer) {
+			btnDownload.setEnabled(true);
+			textDownloadDesc.setForeground(Color.GREEN);
+			textDownloadDesc.setText("Eine neue Version der Trainingsdaten ist zum herunterladen verfügbar!");
+		} else if (localVer >= remoteVer) {
+			btnDownload.setEnabled(false);
+		}
+		if (new File(contentPath).listFiles() == null) {
+			btnProceed.setEnabled(false);
+			btnProceed.setVisible(false);
+			txtpnNotStartable.setVisible(true);
+		} else if (new File(contentPath).listFiles() != null) {
+			System.out.println("[INFO] - " + "Content on file system available");
+			btnProceed.setEnabled(true);
+			btnProceed.setVisible(true);
+			txtpnNotStartable.setVisible(false);
+		}
+		txtpnClientVersion.setText("Client Version: " + ClientVer + " (" + onlineClientVer + ")");
+	}
+
+	private static int getOnlineClientVersion() {
 		try {
 			ContentProvider.download(new URL(urlClient), downloadPath + "/rcver.dat");
 		} catch (MalformedURLException e) {
+			System.out.println("Malformed");
+			ErrorMessage.main(e);
 			System.err.println(e.getMessage());
 		}
 		StringBuilder sb = new StringBuilder();
@@ -312,15 +316,19 @@ public class DataGuardian extends JFrame {
 			sb.append(br.readLine());
 			br.close();
 		} catch (IOException e) {
+			System.out.println("IO");
+			ErrorMessage.main(e);
 			System.err.println(e.getMessage());
 		}
 		return Integer.parseInt(sb.toString());
 	}
 
-	private int getOnlineContentVersion() {
+	private static int getOnlineContentVersion() {
 		try {
 			ContentProvider.download(new URL(urlVer), downloadPath + "/rver.dat");
 		} catch (MalformedURLException e) {
+			System.out.println("Malformed Content");
+			ErrorMessage.main(e);
 			System.err.println(e.getMessage());
 			return 0;
 		}
@@ -332,11 +340,11 @@ public class DataGuardian extends JFrame {
 		return Integer.parseInt(ver);
 	}
 
-	private int getLocalClientVersion() {
+	private static int getLocalClientVersion() {
 		return ContentProvider.getClientVersion();
 	}
 
-	private int getLocalVersion() {
+	private static int getLocalVersion() {
 		return ContentProvider.getContentVersion();
 	}
 
@@ -346,6 +354,7 @@ public class DataGuardian extends JFrame {
 		case 0:
 			try {
 				ContentProvider.download(new URL(urlVer), contentPath + "/ver.dat");
+				updateVersions();
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			}
